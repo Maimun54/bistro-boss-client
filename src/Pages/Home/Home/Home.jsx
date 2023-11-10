@@ -3,6 +3,7 @@ import Banner from "../Banner/Banner";
 import Category from "../Category/Category";
 import PopularMenu from "../PopularMenu/PopularMenu";
 import MenuItem from "../../Shared/MenuItem/MenuItem";
+import Featured from "../Featured/Featured";
 
 
 const Home = () => {
@@ -26,7 +27,9 @@ const Home = () => {
                 menu.map(item=><MenuItem key={item._id} item={item}></MenuItem>)
             }
            </div>
+           <Featured></Featured>
         </div>
+        
     );
 };
 
