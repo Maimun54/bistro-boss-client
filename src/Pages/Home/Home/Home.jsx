@@ -9,15 +9,15 @@ import { Helmet } from "react-helmet-async";
 
 
 const Home = () => {
-    const [menu,setMenu]=useState([])
+    // const [menu,setMenu]=useState([])
 
-    useEffect(()=>{
-        fetch('/menu.json')
-        .then(res=>res.json())
-        .then(data=>{
-            const popularItems =data.filter(item=>item.category==='popular')
-            setMenu(popularItems)})
-    },[])
+    // useEffect(()=>{
+    //     fetch('/menu.json')
+    //     .then(res=>res.json())
+    //     .then(data=>{
+    //         const popularItems =data.filter(item=>item.category==='popular')
+    //         setMenu(popularItems)})
+    // },[])
 
     return (
         <div>
@@ -29,11 +29,11 @@ const Home = () => {
            <Banner></Banner>
            <Category></Category>
            <PopularMenu></PopularMenu>
-           <div className="grid grid-cols-2 gap-10">
+           {/* <div className="grid grid-cols-2 gap-10">
             {
                 menu.map(item=><MenuItem key={item._id} item={item}></MenuItem>)
             }
-           </div>
+           </div> */}
            <Featured></Featured>
            <Testimonials></Testimonials>
         </div>
