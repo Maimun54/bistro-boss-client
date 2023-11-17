@@ -8,6 +8,11 @@ import Menu from "../Pages/Menu/Menu/Menu";
 import Order from "../Pages/Order/Order/Order";
 import Login from "../Pages/Login/Login";
 import SignUP from "../Pages/SignUp/SignUP";
+import Secret from "../Pages/Shared/Secret/Secret";
+import PrivateRoute from "./PrivateRoute";
+import Dashboard from "../Layout/Dashboard";
+import Cart from "../Pages/Dashboard/Cart/Cart";
+import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
  
   
  export const router = createBrowserRouter([
@@ -35,6 +40,25 @@ import SignUP from "../Pages/SignUp/SignUP";
         path:'signUP',
         element:<SignUP></SignUP>
        },
+        {
+        path:'secret',
+        element:<PrivateRoute><Secret></Secret></PrivateRoute>
+       },
       ]
+
     },
+    {
+      path:'dashboard',
+      element:<Dashboard></Dashboard>,
+      children:[
+         {
+          path:'cart',
+          element:<Cart></Cart>
+         },
+         {
+          path:'users',
+          element:<AllUsers></AllUsers>
+         }
+      ]
+    }
   ]);

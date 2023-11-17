@@ -2,21 +2,53 @@ import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../../Components/SocialLogin/Sociallogin";
 
 
 const SignUP = () => {
-    const {createUser}=useContext(AuthContext)
+  const axiosPublic =useAxiosPublic()
+    const {createUser,updateUserProfile,googleSignIn}=useContext(AuthContext)
     const {
-register,handleSubmit,formState: { errors },} = useForm()
-
+register,handleSubmit, reset,formState: { errors },} = useForm()
+const navigate =useNavigate()
 const onSubmit= data => {
     console.log(data)
     createUser(data.email,data.password)
     .then(res=>{
         console.log(res.user)
+        updateUserProfile(data.name,data.photoURL)
+        .then(()=>{
+           //create user entry in the database
+           const userInfo ={
+            name:data.name,
+            email:data.email
+           }
+           axiosPublic.post('/users',userInfo)
+           .then(res=>{
+            if(res.data.insertedId){
+              console.log('user added a database')
+              reset();
+              Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Your work has been saved",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                navigate('/')
+            }
+           })
+            // console.log('user profile updated')
+            
+              
+        })
+        .catch(error=>console.log(error))
     })
 }
-    
+     
     return (
         <div>
             <Helmet>
@@ -40,6 +72,13 @@ const onSubmit= data => {
         </div>
         <div className="form-control">
           <label className="label">
+            <span className="label-text">Photo</span>
+          </label>
+          <input type="text" {...register("photo",{required:true})}  placeholder="Photo  url" className="input input-bordered"  />
+          {errors.photo && <span className="text-red-600">Tomar Picture dow mama</span>}
+        </div>
+        <div className="form-control">
+          <label className="label">
             <span className="label-text">Email</span>
           </label>
           <input type="email" {...register("email",{required:true})} name="email" placeholder="email" className="input input-bordered"/>
@@ -60,11 +99,15 @@ const onSubmit= data => {
             <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
           </label>
         </div>
-        <div className="form-control mt-6">
+        <div className="form-control  mt-6">
        
           <input type="submit" value="SignUP" className="btn btn-primary" />
         </div>
       </form>
+      <div className="p-5">
+        <h2>Already have a Account <span className="font-bold"><Link to='/login'>Login</Link></span></h2>
+        <SocialLogin></SocialLogin>
+      </div>
     </div>
   </div>
 </div>  
